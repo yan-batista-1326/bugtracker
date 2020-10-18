@@ -7,17 +7,39 @@ package br.edu.iff.bugtrackerProject.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+@Entity
 public class Ticket implements Serializable{
     private static final long serialVersionUID = 1L;
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ticketId;
+    @Column(length = 20, unique = true, nullable = false)
     private String titulo;
+    @Column(length = 50)
     private String descricao;
+    @Column(length = 5, nullable = false)
+    @Enumerated(EnumType.STRING)
     private TipoTicketEnum tipo;
+    @Column(length = 15, nullable = false)
+    @Enumerated(EnumType.STRING)
     private StatusTicketEnum status;
+    @Column(nullable = false)
     private int serveridade;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar dataCriacao;
+    @Column(length = 50)
     private String solucao;
 
     public Ticket(int ticketId, String titulo, String descricao, TipoTicketEnum tipo, StatusTicketEnum status, int serveridade, Calendar dataCriacao, String solucao) {
