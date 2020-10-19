@@ -6,12 +6,16 @@
 package br.edu.iff.bugtrackerProject.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario implements Serializable{
@@ -27,15 +31,14 @@ public class Usuario implements Serializable{
     @Column(nullable = false)
     private String senha;
 
-    private List<Projeto> projetos;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<Projeto> projetos = new ArrayList<>();
 
-    public Usuario(int idUser, String nome, String email, String senha) {
-        this.idUser = idUser;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
-    
+    //Construtor
+    public Usuario() {}
+
+    //Hash and Equals
     @Override
     public int hashCode() {
         int hash = 3;
@@ -61,6 +64,15 @@ public class Usuario implements Serializable{
         return true;
     }
 
+    //Getters and Setters
+    public List<Projeto> getProjetos() {
+        return projetos;
+    }
+
+    public void setProjetos(List<Projeto> projetos) {
+        this.projetos = projetos;
+    }
+    
     public int getIdUser() {
         return idUser;
     }

@@ -35,24 +35,17 @@ public class Ticket implements Serializable{
     @Enumerated(EnumType.STRING)
     private StatusTicketEnum status;
     @Column(nullable = false)
-    private int serveridade;
+    private int severidade;
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar dataCriacao;
     @Column(length = 50)
     private String solucao;
 
-    public Ticket(int ticketId, String titulo, String descricao, TipoTicketEnum tipo, StatusTicketEnum status, int serveridade, Calendar dataCriacao, String solucao) {
-        this.ticketId = ticketId;
-        this.titulo = titulo;
-        this.descricao = descricao;
-        this.tipo = tipo;
-        this.status = status;
-        this.serveridade = serveridade;
-        this.dataCriacao = dataCriacao;
-        this.solucao = solucao;
-    }
+    //Construtor
+    public Ticket() {}
 
+    //Getters and Setters
     public int getTicketId() {
         return ticketId;
     }
@@ -93,12 +86,12 @@ public class Ticket implements Serializable{
         this.status = status;
     }
 
-    public int getServeridade() {
-        return serveridade;
+    public int getSeveridade() {
+        return severidade;
     }
 
-    public void setServeridade(int serveridade) {
-        this.serveridade = serveridade;
+    public void setSeveridade(int severidade) {
+        this.severidade = severidade;
     }
 
     public Calendar getDataCriacao() {
@@ -117,6 +110,7 @@ public class Ticket implements Serializable{
         this.solucao = solucao;
     }
 
+    //Hash and Equals
     @Override
     public int hashCode() {
         int hash = 3;

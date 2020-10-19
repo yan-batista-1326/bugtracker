@@ -6,12 +6,16 @@
 package br.edu.iff.bugtrackerProject.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Projeto implements Serializable{
@@ -25,12 +29,20 @@ public class Projeto implements Serializable{
     @Column(length = 100)
     private String descricao;
     
-    private List<Ticket> tickets;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "projeto_id")
+    private List<Ticket> tickets = new ArrayList<>();
 
-    public Projeto(int idProject, String nome, String descricao) {
-        this.idProject = idProject;
-        this.nome = nome;
-        this.descricao = descricao;
+    //Construtor
+    public Projeto() {}
+
+    //Getters and Setters
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public int getIdProject() {
@@ -57,6 +69,7 @@ public class Projeto implements Serializable{
         this.descricao = descricao;
     }
 
+    //Hash and Equals
     @Override
     public int hashCode() {
         int hash = 5;
