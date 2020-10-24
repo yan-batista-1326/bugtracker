@@ -16,6 +16,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Ticket implements Serializable{
@@ -24,22 +30,42 @@ public class Ticket implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ticketId;
+    
     @Column(length = 20, unique = true, nullable = false)
+    @NotBlank(message="O título é obrigatório")
+    @Length(max = 20, message = "O título deve ter no máximo 20 caracteres")
     private String titulo;
+    
     @Column(length = 50)
+    @Length(max = 50, message="A descrição deve ter no máximo 50 caracteres")
     private String descricao;
+    
     @Column(length = 5, nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotBlank(message="O tipo de ticket é obrigatório")
+    @Length(max=5, message="O tipo de ticket deve ter no máximo 5 caracteres")
     private TipoTicketEnum tipo;
+    
     @Column(length = 15, nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotBlank(message="O status do ticket é obrigatório")
+    @Length(max=15, message="O status do ticket deve ter no máximo 15 caracteres")
     private StatusTicketEnum status;
+    
     @Column(nullable = false)
+    @NotBlank(message="A severidade do ticket é obrigatória")
+    @Min(0) @Max(5)
     private int severidade;
+    
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @NotBlank(message="A data de criação é obrigatória")
+    @FutureOrPresent(message="A data deve ser feita no momento de criação")
+    @DateTimeFormat(pattern="yyyy-mm-dd")
     private Calendar dataCriacao;
+    
     @Column(length = 50)
+    @Length(message="A solução deve conter no máximo 50 caracteres")
     private String solucao;
 
     //Construtor

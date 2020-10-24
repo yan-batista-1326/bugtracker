@@ -5,6 +5,8 @@
  */
 package br.edu.iff.bugtrackerProject.model;
 
+import br.edu.iff.bugtrackerProject.annotation.EmailValidation;
+import br.edu.iff.bugtrackerProject.annotation.PasswordValidation;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Usuario implements Serializable{
@@ -24,15 +29,32 @@ public class Usuario implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUser;
-    @Column(nullable = false, length = 20, unique = true, updatable = false)
+    
+    @Column(nullable = false, length = 50)
+    @NotBlank(message="Nome é obrigatório.")
+    @Length(max=50, message="Nome deve ter no máximo 50 caracteres")
     private String nome;
+    
+    @Column(nullable = false, length = 50)
+    @NotBlank(message="Sobrenome é obrigatório.")
+    @Length(max=50, message="Sobrenome deve ter no máximo 50 caracteres")
+    private String sobrenome;
+    
     @Column(nullable = false, length = 100, unique = true, updatable = false)
+    @NotBlank(message="Email é obrigatório")
+    @EmailValidation
     private String email;
+    
     @Column(nullable = false)
+    @NotBlank(message="Senha é obrigatória")
+    @Length(min=6, message="A senha deve ter no mínimo 6 caracteres")
+    @PasswordValidation(message="A senha deve conter uma letra maiúscula, uma minúscula, um caractere especial, um número, e um total de 6 caracteres. Ex: Aa@123")
     private String senha;
 
+    //Atributos de relacionamento
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
+    @Valid
     private List<Projeto> projetos = new ArrayList<>();
 
     //Construtor
@@ -87,6 +109,14 @@ public class Usuario implements Serializable{
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
     }
 
     public String getEmail() {
