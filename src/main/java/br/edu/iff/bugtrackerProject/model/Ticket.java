@@ -65,7 +65,7 @@ public class Ticket implements Serializable{
     private Calendar dataCriacao;
     
     @Column(length = 50)
-    @Length(message="A solução deve conter no máximo 50 caracteres")
+    @Length(max = 50, message="A solução deve conter no máximo 50 caracteres")
     private String solucao;
 
     //Construtor
