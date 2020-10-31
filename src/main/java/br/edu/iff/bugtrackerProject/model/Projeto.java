@@ -26,7 +26,7 @@ public class Projeto implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idProject;
+    private long idProject;
     
     @Column(nullable = false, length = 20, unique = true)
     @NotBlank(message="O nome do projeto é obrigatório")
@@ -55,7 +55,7 @@ public class Projeto implements Serializable{
         this.tickets = tickets;
     }
 
-    public int getIdProject() {
+    public long getIdProject() {
         return idProject;
     }
 
@@ -82,8 +82,8 @@ public class Projeto implements Serializable{
     //Hash and Equals
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 43 * hash + this.idProject;
+        int hash = 7;
+        hash = 59 * hash + (int) (this.idProject ^ (this.idProject >>> 32));
         return hash;
     }
 
@@ -104,5 +104,5 @@ public class Projeto implements Serializable{
         }
         return true;
     }
-    
+      
 }

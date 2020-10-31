@@ -28,7 +28,7 @@ public class Usuario implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idUser;
+    private long idUser;
     
     @Column(nullable = false, length = 50)
     @NotBlank(message="Nome é obrigatório.")
@@ -62,10 +62,11 @@ public class Usuario implements Serializable{
     public Usuario() {}
 
     //Hash and Equals
+
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 61 * hash + this.idUser;
+        int hash = 7;
+        hash = 97 * hash + (int) (this.idUser ^ (this.idUser >>> 32));
         return hash;
     }
 
@@ -86,6 +87,7 @@ public class Usuario implements Serializable{
         }
         return true;
     }
+    
 
     //Getters and Setters
     public List<Projeto> getProjetos() {
@@ -95,8 +97,8 @@ public class Usuario implements Serializable{
     public void setProjetos(List<Projeto> projetos) {
         this.projetos = projetos;
     }
-    
-    public int getIdUser() {
+
+    public long getIdUser() {
         return idUser;
     }
 
