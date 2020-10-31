@@ -20,6 +20,8 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -42,13 +44,13 @@ public class Ticket implements Serializable{
     
     @Column(length = 5, nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotBlank(message="O tipo de ticket é obrigatório")
+    @NotNull(message="O tipo de ticket é obrigatório")
     @Length(max=5, message="O tipo de ticket deve ter no máximo 5 caracteres")
     private TipoTicketEnum tipo;
     
     @Column(length = 15, nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotBlank(message="O status do ticket é obrigatório")
+    @NotNull(message="O status do ticket é obrigatório")
     @Length(max=15, message="O status do ticket deve ter no máximo 15 caracteres")
     private StatusTicketEnum status;
     
@@ -60,8 +62,8 @@ public class Ticket implements Serializable{
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @NotBlank(message="A data de criação é obrigatória")
-    @FutureOrPresent(message="A data deve ser feita no momento de criação")
-    @DateTimeFormat(pattern="yyyy-mm-dd")
+    @PastOrPresent(message="A data deve ser feita no momento de criação")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Calendar dataCriacao;
     
     @Column(length = 50)

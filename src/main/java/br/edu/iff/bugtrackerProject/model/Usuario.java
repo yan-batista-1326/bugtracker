@@ -42,6 +42,7 @@ public class Usuario implements Serializable{
     
     @Column(nullable = false, length = 100, unique = true, updatable = false)
     @NotBlank(message="Email é obrigatório")
+    @Length(max=100)
     @EmailValidation
     private String email;
     
