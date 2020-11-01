@@ -7,6 +7,7 @@ package br.edu.iff.bugtrackerProject.repository;
 
 import br.edu.iff.bugtrackerProject.model.Projeto;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,6 @@ import org.springframework.stereotype.Repository;
 public interface ProjectRepository extends JpaRepository<Projeto, Long>{    
     public Projeto findById (long id);
     
-    @Query("select projeto.* from projeto join usuario where projeto.user_id = :id AND projeto.user_id = usuario.id_user")
-    public List<Projeto> findProjectByUserId (long id);
+    @Query("SELECT DISTINCT(p) FROM Usuario u JOIN u.projetos p WHERE u.idUser = :userId")
+    public List<Projeto> findByUsuarioId (long userId);
 }

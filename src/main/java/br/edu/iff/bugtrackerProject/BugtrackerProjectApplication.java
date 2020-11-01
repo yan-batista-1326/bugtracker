@@ -1,13 +1,84 @@
 package br.edu.iff.bugtrackerProject;
 
+import br.edu.iff.bugtrackerProject.model.Projeto;
+import br.edu.iff.bugtrackerProject.model.StatusTicketEnum;
+import br.edu.iff.bugtrackerProject.model.Ticket;
+import br.edu.iff.bugtrackerProject.model.TipoTicketEnum;
+import br.edu.iff.bugtrackerProject.model.Usuario;
+import br.edu.iff.bugtrackerProject.repository.TicketRepository;
+import br.edu.iff.bugtrackerProject.repository.UserRepository;
+import java.util.Calendar;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BugtrackerProjectApplication {
+public class BugtrackerProjectApplication implements CommandLineRunner{
+    
+    @Autowired
+    private UserRepository userRepo;
+    @Autowired
+    private TicketRepository ticketRepo;
+    
+    public static void main(String[] args) {
+	SpringApplication.run(BugtrackerProjectApplication.class, args);
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(BugtrackerProjectApplication.class, args);
-	}
+    @Override
+    public void run(String... args) throws Exception {
+        //Ticket
+        Ticket t1 = new Ticket();
+        t1.setTitulo("Erro1");
+        t1.setDescricao("Descricao-t1");
+        t1.setTipo(TipoTicketEnum.ERRO);
+        t1.setStatus(StatusTicketEnum.ABERTO);
+        t1.setSeveridade(3);
+        Calendar c = Calendar.getInstance();
+        t1.setDataCriacao(c);
+        t1.setSolucao("Solucao1");
+        
+        Ticket t2 = new Ticket();
+        t2.setTitulo("Erro2");
+        t2.setDescricao("Descricao-t2");
+        t2.setTipo(TipoTicketEnum.ERRO);
+        t2.setStatus(StatusTicketEnum.EM_PROGRESSO);
+        t2.setSeveridade(5);
+        Calendar c2 = Calendar.getInstance();
+        t2.setDataCriacao(c2);
+        t2.setSolucao("Solucao2");
+        
+        Ticket t3 = new Ticket();
+        t3.setTitulo("Bug");
+        t3.setDescricao("Descricao-t3");
+        t3.setTipo(TipoTicketEnum.BUG);
+        t3.setStatus(StatusTicketEnum.FECHADO);
+        t3.setSeveridade(3);
+        Calendar c3 = Calendar.getInstance();
+        t3.setDataCriacao(c3);
+        t3.setSolucao("Solucao3");
+        
+        //Projeto
+        Projeto p1 = new Projeto();
+        p1.setNome("projeto1");
+        p1.setDescricao("Descricao1");
+        p1.setTickets(List.of(t1, t2));
+        
+        Projeto p2 = new Projeto();
+        p2.setNome("projeto2");
+        p2.setDescricao("Descricao2");
+        p2.setTickets(List.of(t3));
+        
+        //Usuário
+        Usuario user1 = new Usuario();
+        user1.setNome("Yan");
+        user1.setSobrenome("Batista");
+        user1.setEmail("ybatistasouza@hotmail.com");
+        user1.setSenha("Aa1234#6");
+        user1.setProjetos(List.of(p1, p2));
+        
+        userRepo.save(user1);
+    }
 
 }

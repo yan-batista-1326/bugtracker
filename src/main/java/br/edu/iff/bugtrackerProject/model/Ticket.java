@@ -16,7 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -31,7 +30,7 @@ public class Ticket implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ticketId;
+    private long ticketId;
     
     @Column(length = 20, unique = true, nullable = false)
     @NotBlank(message="O título é obrigatório")
@@ -45,23 +44,21 @@ public class Ticket implements Serializable{
     @Column(length = 5, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull(message="O tipo de ticket é obrigatório")
-    @Length(max=5, message="O tipo de ticket deve ter no máximo 5 caracteres")
     private TipoTicketEnum tipo;
     
     @Column(length = 15, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull(message="O status do ticket é obrigatório")
-    @Length(max=15, message="O status do ticket deve ter no máximo 15 caracteres")
     private StatusTicketEnum status;
     
     @Column(nullable = false)
-    @NotBlank(message="A severidade do ticket é obrigatória")
+    @NotNull(message="A severidade do ticket é obrigatória")
     @Min(0) @Max(5)
     private int severidade;
     
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @NotBlank(message="A data de criação é obrigatória")
+    @NotNull(message="A data de criação é obrigatória")
     @PastOrPresent(message="A data deve ser feita no momento de criação")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Calendar dataCriacao;
@@ -74,7 +71,8 @@ public class Ticket implements Serializable{
     public Ticket() {}
 
     //Getters and Setters
-    public int getTicketId() {
+
+    public long getTicketId() {
         return ticketId;
     }
 
@@ -141,8 +139,8 @@ public class Ticket implements Serializable{
     //Hash and Equals
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.ticketId;
+        int hash = 7;
+        hash = 19 * hash + (int) (this.ticketId ^ (this.ticketId >>> 32));
         return hash;
     }
 
@@ -163,5 +161,6 @@ public class Ticket implements Serializable{
         }
         return true;
     }
+    
     
 }
