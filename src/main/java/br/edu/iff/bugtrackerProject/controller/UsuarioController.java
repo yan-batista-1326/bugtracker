@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path="/api/usuarios")
-public class ClienteController {
+public class UsuarioController {
     @Autowired
     private UsuarioService service;
     
@@ -41,7 +41,7 @@ public class ClienteController {
     
     @PutMapping(path="/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Usuario usuario) {
-        usuario.setIdUser(null);
+        usuario.setIdUser(id);
         service.update(usuario, "", "", "");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

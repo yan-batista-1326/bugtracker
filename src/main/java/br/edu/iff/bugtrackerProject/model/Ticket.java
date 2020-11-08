@@ -5,6 +5,7 @@
  */
 package br.edu.iff.bugtrackerProject.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
@@ -64,6 +65,7 @@ public class Ticket implements Serializable{
     @NotNull(message="A data de criação é obrigatória")
     @PastOrPresent(message="A data deve ser feita no momento de criação")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Calendar dataCriacao;
     
     @Column(length = 50)

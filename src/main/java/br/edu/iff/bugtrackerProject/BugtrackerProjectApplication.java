@@ -74,9 +74,9 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
         
         //Usuário
         Usuario user1 = new Usuario();
-        user1.setNome("Yan");
-        user1.setSobrenome("Batista");
-        user1.setEmail("ybatistasouza@hotmail.com");
+        user1.setNome("José");
+        user1.setSobrenome("Silva");
+        user1.setEmail("joseSilva@hotmail.com");
         user1.setSenha("Aa1234#6");
         user1.setProjetos(List.of(p1, p2));
         

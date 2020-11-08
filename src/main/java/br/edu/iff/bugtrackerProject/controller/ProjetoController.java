@@ -40,7 +40,7 @@ public class ProjetoController {
     
     @PutMapping(path = "/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Projeto proj) {
-        proj.setIdProject(null);
+        proj.setIdProject(id);
         service.update(proj);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

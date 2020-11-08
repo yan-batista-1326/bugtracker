@@ -8,6 +8,7 @@ package br.edu.iff.bugtrackerProject.model;
 import br.edu.iff.bugtrackerProject.annotation.EmailValidation;
 import br.edu.iff.bugtrackerProject.annotation.PasswordValidation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
+@JsonIgnoreProperties(value = "senha", allowGetters = false, allowSetters = true)
 public class Usuario implements Serializable{
     private static final long serialVersionUID = 1L;
     

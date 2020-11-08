@@ -45,7 +45,7 @@ public class TicketController {
     
     @PutMapping(path="/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Ticket ticket) {
-        ticket.setTicketId(null);
+        ticket.setTicketId(id);
         service.update(ticket);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
