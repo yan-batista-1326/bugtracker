@@ -49,6 +49,7 @@ public class UsuarioService {
         alterarSenha(obj, senhaAtual, novaSenha, confirmarNovaSenha);
         try {
             user.setEmail(obj.getEmail());
+            user.setSenha(obj.getSenha());
             return repo.save(user);
         } catch(Exception e) {
             throw new RuntimeException("Falha ao atualizar usuário");
