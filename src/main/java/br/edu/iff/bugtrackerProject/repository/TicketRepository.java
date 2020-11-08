@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
 public interface TicketRepository extends JpaRepository<Ticket, Long>{    
     public Ticket findById (long id);
     
-    @Query("SELECT DISTINCT(t) FROM Projeto p JOIN p.tickets t WHERE p.idProject = :projetoId")
+    @Query("SELECT DISTINCT(t) FROM Ticket t WHERE t.projeto.idProject = :projetoId")
     public List<Ticket> findByProjetoId (long projetoId);
 }

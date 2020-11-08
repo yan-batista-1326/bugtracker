@@ -29,11 +29,14 @@ public class UsuarioService {
     }
     
     public Usuario save(Usuario user) {
-        verificaEmailCadastrado(user.getEmail());
-        try {
-            return repo.save(user);  
-        } catch(Exception e) {
-            throw new RuntimeException("Falha ao salvar o usuário");
+        if(user.getIdUser() != null) {
+            throw new RuntimeException("Id diferente de nulo");
+        } else {
+            try {
+                return repo.save(user);  
+            } catch(Exception e) {
+                throw new RuntimeException("Falha ao salvar o usuário");
+            }
         }
     }
     
@@ -58,13 +61,6 @@ public class UsuarioService {
             repo.delete(obj);
         } catch (Exception e) {
             throw new RuntimeException("Falha ao deletar usuário");
-        }
-    }
-    
-    private void verificaEmailCadastrado(String email) {
-        Usuario obj = repo.findByEmail(email);
-        if(obj != null) {
-            throw new RuntimeException("Email já cadastrado");
         }
     }
     

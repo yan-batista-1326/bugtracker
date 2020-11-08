@@ -5,6 +5,7 @@ import br.edu.iff.bugtrackerProject.model.StatusTicketEnum;
 import br.edu.iff.bugtrackerProject.model.Ticket;
 import br.edu.iff.bugtrackerProject.model.TipoTicketEnum;
 import br.edu.iff.bugtrackerProject.model.Usuario;
+import br.edu.iff.bugtrackerProject.repository.ProjectRepository;
 import br.edu.iff.bugtrackerProject.repository.TicketRepository;
 import br.edu.iff.bugtrackerProject.repository.UserRepository;
 import java.util.Calendar;
@@ -21,6 +22,8 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
     private UserRepository userRepo;
     @Autowired
     private TicketRepository ticketRepo;
+    @Autowired
+    private ProjectRepository projRepo;
     
     public static void main(String[] args) {
 	SpringApplication.run(BugtrackerProjectApplication.class, args);
@@ -35,9 +38,8 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
         t1.setTipo(TipoTicketEnum.ERRO);
         t1.setStatus(StatusTicketEnum.ABERTO);
         t1.setSeveridade(3);
-        Calendar c = Calendar.getInstance();
-        t1.setDataCriacao(c);
         t1.setSolucao("Solucao1");
+        t1.setDataCriacao(Calendar.getInstance());
         
         Ticket t2 = new Ticket();
         t2.setTitulo("Erro2");
@@ -45,9 +47,8 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
         t2.setTipo(TipoTicketEnum.ERRO);
         t2.setStatus(StatusTicketEnum.EM_PROGRESSO);
         t2.setSeveridade(5);
-        Calendar c2 = Calendar.getInstance();
-        t2.setDataCriacao(c2);
         t2.setSolucao("Solucao2");
+        t2.setDataCriacao(Calendar.getInstance());
         
         Ticket t3 = new Ticket();
         t3.setTitulo("Bug");
@@ -55,9 +56,8 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
         t3.setTipo(TipoTicketEnum.BUG);
         t3.setStatus(StatusTicketEnum.FECHADO);
         t3.setSeveridade(3);
-        Calendar c3 = Calendar.getInstance();
-        t3.setDataCriacao(c3);
         t3.setSolucao("Solucao3");
+        t3.setDataCriacao(Calendar.getInstance());
         
         //Projeto
         Projeto p1 = new Projeto();
@@ -65,10 +65,12 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
         p1.setDescricao("Descricao1");
         p1.setTickets(List.of(t1, t2));
         
+        
         Projeto p2 = new Projeto();
         p2.setNome("projeto2");
         p2.setDescricao("Descricao2");
         p2.setTickets(List.of(t3));
+        
         
         //Usuário
         Usuario user1 = new Usuario();
@@ -79,6 +81,19 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
         user1.setProjetos(List.of(p1, p2));
         
         userRepo.save(user1);
+        
+        p1.setUsuario(user1);
+        p2.setUsuario(user1);
+        
+        projRepo.save(p1);
+        projRepo.save(p2);
+        
+        t1.setProjeto(p1);
+        t2.setProjeto(p1);
+        t3.setProjeto(p2);
+        
+        ticketRepo.save(t1);
+        ticketRepo.save(t2);
+        ticketRepo.save(t3);
     }
-
 }

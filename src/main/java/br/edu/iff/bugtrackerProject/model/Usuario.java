@@ -7,16 +7,17 @@ package br.edu.iff.bugtrackerProject.model;
 
 import br.edu.iff.bugtrackerProject.annotation.EmailValidation;
 import br.edu.iff.bugtrackerProject.annotation.PasswordValidation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -28,7 +29,7 @@ public class Usuario implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idUser;
+    private Long idUser;
     
     @Column(nullable = false, length = 50)
     @NotBlank(message="Nome é obrigatório.")
@@ -53,8 +54,8 @@ public class Usuario implements Serializable{
     private String senha;
 
     //Atributos de relacionamento
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    @OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.REMOVE)
     @Valid
     private List<Projeto> projetos = new ArrayList<>();
 
@@ -62,11 +63,10 @@ public class Usuario implements Serializable{
     public Usuario() {}
 
     //Hash and Equals
-
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + (int) (this.idUser ^ (this.idUser >>> 32));
+        int hash = 3;
+        hash = 71 * hash + Objects.hashCode(this.idUser);
         return hash;
     }
 
@@ -82,13 +82,12 @@ public class Usuario implements Serializable{
             return false;
         }
         final Usuario other = (Usuario) obj;
-        if (this.idUser != other.idUser) {
+        if (!Objects.equals(this.idUser, other.idUser)) {
             return false;
         }
         return true;
     }
     
-
     //Getters and Setters
     public List<Projeto> getProjetos() {
         return projetos;
@@ -98,11 +97,11 @@ public class Usuario implements Serializable{
         this.projetos = projetos;
     }
 
-    public long getIdUser() {
+    public Long getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(Long idUser) {
         this.idUser = idUser;
     }
 

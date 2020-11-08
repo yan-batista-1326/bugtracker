@@ -27,18 +27,15 @@ public class ProjetoService {
     }
     
     public Projeto save(Projeto proj) {
-       //Verificar se já existe
-       Long id = proj.getIdProject();
-       Optional<Projeto> obj = repo.findById(id);
-       if(!obj.isEmpty()) {
-            throw new RuntimeException("Projeto já existe");   
-       }
-       
-       try {
-           return repo.save(proj);
-       } catch (Exception e) {
-           throw new RuntimeException("Falha ao salvar projeto");     
-       }
+        if(proj.getIdProject() != null) {
+            throw new RuntimeException("Id diferente de nulo");
+        } else {
+            try {
+                return repo.save(proj);
+            } catch (Exception e) {
+                throw new RuntimeException("Falha ao salvar projeto");     
+            }
+        }
     }
     
     public Projeto update(Projeto proj) {

@@ -7,6 +7,7 @@ package br.edu.iff.bugtrackerProject.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
@@ -30,7 +33,7 @@ public class Ticket implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ticketId;
+    private Long ticketId;
     
     @Column(length = 20, unique = true, nullable = false)
     @NotBlank(message="O título é obrigatório")
@@ -67,16 +70,30 @@ public class Ticket implements Serializable{
     @Length(max = 50, message="A solução deve conter no máximo 50 caracteres")
     private String solucao;
 
+    //Atributo de Relacionamento
+    @ManyToOne
+    @JoinColumn(name="projeto_id", nullable = false)
+    @NotNull(message="Ticket deve ter um projeto")
+    private Projeto projeto;
+    
     //Construtor
     public Ticket() {}
 
     //Getters and Setters
+    public Projeto getProjeto() {
+        return projeto;
+    }
 
-    public long getTicketId() {
+    public void setProjeto(Projeto projeto) {
+        this.projeto = projeto;
+    }
+    
+    
+    public Long getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(int ticketId) {
+    public void setTicketId(Long ticketId) {
         this.ticketId = ticketId;
     }
 
@@ -140,7 +157,7 @@ public class Ticket implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 19 * hash + (int) (this.ticketId ^ (this.ticketId >>> 32));
+        hash = 59 * hash + Objects.hashCode(this.ticketId);
         return hash;
     }
 
@@ -156,11 +173,9 @@ public class Ticket implements Serializable{
             return false;
         }
         final Ticket other = (Ticket) obj;
-        if (this.ticketId != other.ticketId) {
+        if (!Objects.equals(this.ticketId, other.ticketId)) {
             return false;
         }
         return true;
     }
-    
-    
 }

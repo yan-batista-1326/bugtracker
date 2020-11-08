@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProjectRepository extends JpaRepository<Projeto, Long>{    
     public Projeto findById (long id);
-    
-    @Query("SELECT DISTINCT(p) FROM Usuario u JOIN u.projetos p WHERE u.idUser = :userId")
+    @Query("SELECT DISTINCT(p) FROM Projeto p WHERE p.usuario.idUser = :userId")
     public List<Projeto> findByUsuarioId (long userId);
 }
