@@ -1,5 +1,6 @@
 package br.edu.iff.bugtrackerProject.service;
 
+import br.edu.iff.bugtrackerProject.exception.NotFoundException;
 import br.edu.iff.bugtrackerProject.model.Ticket;
 import br.edu.iff.bugtrackerProject.repository.TicketRepository;
 import java.util.Calendar;
@@ -16,7 +17,7 @@ public class TicketService {
     public Ticket findById(Long id) {
        Optional<Ticket> result = repo.findById(id);
        if(result.isEmpty()) {
-           throw new RuntimeException("Ticket não existe");
+           throw new NotFoundException("Ticket não encontrado");
        }
        return result.get();
     }

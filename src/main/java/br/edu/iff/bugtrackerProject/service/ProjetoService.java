@@ -1,5 +1,6 @@
 package br.edu.iff.bugtrackerProject.service;
 
+import br.edu.iff.bugtrackerProject.exception.NotFoundException;
 import br.edu.iff.bugtrackerProject.model.Projeto;
 import br.edu.iff.bugtrackerProject.repository.ProjectRepository;
 import java.util.List;
@@ -15,7 +16,7 @@ public class ProjetoService {
     public Projeto findById(Long id) {
         Optional<Projeto> result = repo.findById(id);
         if(result.isEmpty()) {
-            throw new RuntimeException("Projeto não encontrado");
+            throw new NotFoundException("Projeto não encontrado");
         }
         return result.get();
     }

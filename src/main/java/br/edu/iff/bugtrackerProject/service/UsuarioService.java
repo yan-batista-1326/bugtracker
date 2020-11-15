@@ -1,9 +1,11 @@
 package br.edu.iff.bugtrackerProject.service;
 
+import br.edu.iff.bugtrackerProject.exception.NotFoundException;
 import br.edu.iff.bugtrackerProject.model.Usuario;
 import br.edu.iff.bugtrackerProject.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ public class UsuarioService {
     public Usuario findById(Long id) {
         Optional<Usuario> result = repo.findById(id);
         if(result.isEmpty()) {
-            throw new RuntimeException("Usuário não encontrado");
+            throw new NotFoundException("Usuário não encontrado");
         }
         return result.get();
     }
@@ -52,6 +54,13 @@ public class UsuarioService {
             user.setSenha(obj.getSenha());
             return repo.save(user);
         } catch(Exception e) {
+            Throwable t = e;
+            while (t.getCause() != null) {
+                t = t.getCause();
+                if(t instanceof ConstraintViolationException) {
+                    throw ((ConstraintViolationException) t);
+                }
+            }
             throw new RuntimeException("Falha ao atualizar usuário");
         }
     }
