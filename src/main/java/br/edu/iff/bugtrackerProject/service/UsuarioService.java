@@ -54,13 +54,6 @@ public class UsuarioService {
             user.setSenha(obj.getSenha());
             return repo.save(user);
         } catch(Exception e) {
-            Throwable t = e;
-            while (t.getCause() != null) {
-                t = t.getCause();
-                if(t instanceof ConstraintViolationException) {
-                    throw ((ConstraintViolationException) t);
-                }
-            }
             throw new RuntimeException("Falha ao atualizar usuário");
         }
     }

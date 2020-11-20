@@ -40,7 +40,7 @@ public class UsuarioController {
     }
     
     @PutMapping(path="/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuario) {
         usuario.setIdUser(id);
         service.update(usuario, "", "", "");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
