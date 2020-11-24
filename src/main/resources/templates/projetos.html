@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragmentos :: imports-css(title='Projetos')}">
+        <title>...</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div th:replace="~{fragmentos :: barramenu(pagina='projetos')}"></div>
+        
+        <div class="container" style="margin-top: 20px">
+            <div class="card-header">
+                <h4>
+                    Projetos Criados
+                    <a class="btn btn-primary float-right" th:href="@{~/usuarios/{user}/projetos/projeto(user=${userId})}" role="button">Novo Projeto</a>
+                    <a class="btn btn-primary float-right" th:href="@{~/usuarios}" role="button" style="margin-right: 5px">Voltar</a>
+                </h4>
+            </div>
+            
+            <div class="card" th:each="projeto : ${projetos}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${projeto.nome}"></h5>
+                    <span class="card-text" th:text="${projeto.descricao}"></span><br/>
+                    
+                </div>
+                
+                <div class="card-body">
+                    <span class="card-text" th:text="${'Usuário: ' + projeto.usuario.nome + ' ' + projeto.usuario.sobrenome}"></span><br/>
+                    <span class="card-text" th:text="${'Email: ' + projeto.usuario.email}"></span>
+                </div>
+                
+                <div class="card-body">
+                    <a th:href="@{'~/projetos/' + ${projeto.idProject} + '/tickets'}" class="btn btn-success">Tickets</a>
+                    <a th:href="@{'~/usuarios/' + ${userId} + '/projetos/projeto/' + ${projeto.idProject}}" class="btn btn-warning">Editar</a>
+                    <a th:href="@{'~/usuarios/' + ${userId} + '/projetos/' + ${projeto.idProject} + '/deletar'}" class="btn btn-danger" onclick="return confirm('Deseja realmente excluir esse projeto?')">Excluir</a>
+                </div>
+            </div>
+        </div>
+        
+        <div th:replace="~{fragmentos :: imports-js}"></div>
+    </body>
+</html>

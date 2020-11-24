@@ -1,7 +1,12 @@
-package br.edu.iff.bugtrackerProject.controller;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.edu.iff.bugtrackerProject.controller.apirest;
 
-import br.edu.iff.bugtrackerProject.model.Usuario;
-import br.edu.iff.bugtrackerProject.service.UsuarioService;
+import br.edu.iff.bugtrackerProject.model.Ticket;
+import br.edu.iff.bugtrackerProject.service.TicketService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path="/api/usuarios")
-public class UsuarioController {
+@RequestMapping(path = "/api/tickets")
+public class TicketController {
     @Autowired
-    private UsuarioService service;
+    private TicketService service;
     
     @GetMapping
     public ResponseEntity getAll() {
@@ -33,32 +37,22 @@ public class UsuarioController {
     }
     
     @PostMapping
-    public ResponseEntity save(@Valid @RequestBody Usuario usuario) {
-        usuario.setIdUser(null);
-        service.save(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+    public ResponseEntity save(@Valid @RequestBody Ticket ticket) {
+        ticket.setTicketId(null);
+        service.save(ticket);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticket);
     }
     
     @PutMapping(path="/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuario) {
-        usuario.setIdUser(id);
-        service.update(usuario, "", "", "");
+    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Ticket ticket) {
+        ticket.setTicketId(id);
+        service.update(ticket);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
     @DeleteMapping(path="/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
         service.delete(id);
-        return ResponseEntity.ok().build();
-    }
-    
-    @PutMapping(path="/{id}/alterarSenha")
-    public ResponseEntity alterarSenha(@PathVariable("id") Long id, 
-            @RequestParam(name="senhaAtual", defaultValue="", required=true) String senhaAtual,
-            @RequestParam(name="novaSenha", defaultValue="", required=true) String novaSenha,
-            @RequestParam(name="confirmarNovaSenha", defaultValue="", required=true) String confirmarNovaSenha) {
-        Usuario u = service.findById(id);
-        service.update(u, senhaAtual, novaSenha, confirmarNovaSenha);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.edu.iff.bugtrackerProject.controller;
+package br.edu.iff.bugtrackerProject.controller.apirest;
 
-import br.edu.iff.bugtrackerProject.model.Ticket;
-import br.edu.iff.bugtrackerProject.service.TicketService;
+import br.edu.iff.bugtrackerProject.model.Projeto;
+import br.edu.iff.bugtrackerProject.service.ProjetoService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,36 +16,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/api/tickets")
-public class TicketController {
+@RequestMapping(path = "/api/projetos")
+public class ProjetoController {
     @Autowired
-    private TicketService service;
+    private ProjetoService service;
     
     @GetMapping
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
     }
     
-    @GetMapping(path="/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity getOne(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(service.findById(id));
+        return ResponseEntity.ok(service.findById(id)); //Abreviação de ResponseEntity.status(HttpStatus.OK).body(bodyElement);
     }
     
     @PostMapping
-    public ResponseEntity save(@Valid @RequestBody Ticket ticket) {
-        ticket.setTicketId(null);
-        service.save(ticket);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ticket);
+    public ResponseEntity save(@Valid @RequestBody Projeto proj) {
+        proj.setIdProject(null);
+        service.save(proj);
+        return ResponseEntity.status(HttpStatus.CREATED).body(proj);
     }
     
-    @PutMapping(path="/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Ticket ticket) {
-        ticket.setTicketId(id);
-        service.update(ticket);
+    @PutMapping(path = "/{id}")
+    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Projeto proj) {
+        proj.setIdProject(id);
+        service.update(proj);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
-    @DeleteMapping(path="/{id}")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
         service.delete(id);
         return ResponseEntity.ok().build();

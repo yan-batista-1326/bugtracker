@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragmentos :: imports-css(title='Projetos')}">
+        <title>...</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div th:replace="~{fragmentos :: barramenu(pagina='projetos')}"></div>
+        
+        <div class="container" style="width: 60%; margin-top: 20px">
+            <div class="card-header">
+                <h4>Cadastro de Projetos
+                    <a class="btn btn-primary float-right" th:href="@{~/usuarios/{user}/projetos(user=${userId})}" role="button">Voltar</a>
+                </h4>
+            </div>
+            
+            <div th:replace="~{fragmentos :: mensagens}"></div>
+            
+            <form th:object="${projeto}" th:action="@{~/usuarios/{user}/projetos/projeto/{id}(user=${userId}, id=${projeto.idProject})}" method="post" class="card-body">
+                <input type="hidden" th:field="*{idProject}"/>
+                
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="nome">Nome do Projeto:</label>
+                        <input th:field="*{nome}" type="text" class="form-control" placeholder="Nome" required="required" maxlength="20"/>
+                    </div>  
+                    
+                    <div class="form-group col-md-8">
+                        <label for="descricao">Descrição:</label>
+                        <input th:field="*{descricao}" maxlength="100" type="text" class="form-control" placeholder="Descrição"/>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <input type="submit" class="btn btn-success" value="Salvar"/>
+                </div>
+            </form>
+        </div>
+        
+        <div th:replace="~{fragmentos :: imports-js}"></div>
+    </body>
+</html>

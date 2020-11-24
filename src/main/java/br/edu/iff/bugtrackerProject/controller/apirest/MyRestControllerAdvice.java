@@ -1,4 +1,4 @@
-package br.edu.iff.bugtrackerProject.controller;
+package br.edu.iff.bugtrackerProject.controller.apirest;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

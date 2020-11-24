@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragmentos :: imports-css(title='Tickets')}">
+        <title>...</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div th:replace="~{fragmentos :: barramenu(pagina='tickets')}"></div>
+        
+        <div class="container" style="width: 60%; margin-top: 20px">
+            <div class="card-header">
+                <h4>Cadastro de Projetos
+                    <a class="btn btn-primary float-right" th:href="@{~/projetos/{proj}/tickets(proj=${projId})}" role="button">Voltar</a>
+                </h4>
+            </div>
+            
+            <div th:replace="~{fragmentos :: mensagens}"></div>
+            
+            <form th:object="${ticket}" th:action="@{~/projetos/{proj}/tickets/ticket/{id}(proj=${projId}, id=${id})}" method="post" class="card-body">
+                <input type="hidden" th:field="*{ticketId}"/>
+                
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="titulo">Titulo:</label>
+                        <input th:field="*{titulo}" type="text" class="form-control" placeholder="Titulo" required="required" maxlength="20"/>
+                    </div>  
+                    
+                    <div class="form-group col-md-8">
+                        <label for="descricao">Descrição:</label>
+                        <input th:field="*{descricao}" maxlength="50" type="text" class="form-control" placeholder="Descrição" required="required"/>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="tipo">Tipo:</label>
+                        <!--<input th:field="*{titulo}" type="text" class="form-control" placeholder="Tipo" required="required" maxlength="5"/>-->
+                        <select class="form-control form-control-sm" th:field="*{tipo}" required="required">
+                            <option th:each="t : ${tiposTicket}" th:value="${t}" th:text="${t}">content</option>
+                        </select>
+                    </div>  
+                    
+                    <div class="form-group col-md-4">
+                        <label for="status">Status:</label>
+                        <!--<input th:field="*{status}" maxlength="5" type="text" class="form-control" placeholder="Status"/>-->
+                        <select class="form-control form-control-sm" th:field="*{status}" required="required" id="ticketStatus">
+                            <option th:each="s : ${statusTicket}" th:value="${s}" th:text="${s}">content</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-md-4">
+                        <label for="severidade">Severidade:</label>
+                        <input th:field="*{severidade}" min="0" max="5" type="number" class="form-control" required="required"/>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="solucao">Solução:</label>
+                        <input th:field="*{solucao}" type="text" class="form-control" id="ticketSolucao" readonly="readonly" placeholder="Solução" maxlength="50"/>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <input type="submit" class="btn btn-success" value="Salvar"/>
+                </div>
+            </form>
+        </div>
+        
+        <div th:replace="~{fragmentos :: imports-js}"></div>
+        
+        <script>
+            $("#ticketStatus").ready( () => {
+                //Definir valor padrão
+                $("#ticketSolucao").val("Sem solução");
+            });
+            
+            $("#ticketStatus").on("change", () => {
+                console.log($("#ticketStatus").val());
+                if($("#ticketStatus").val() === "FECHADO") {
+                    $("#ticketSolucao").prop('readonly', false);
+                    $("#ticketSolucao").val("");
+                } else {
+                    $("#ticketSolucao").prop('readonly', true);
+                    $("#ticketSolucao").val("Sem solução");
+                }
+            });
+        </script>
+    </body>
+</html>
