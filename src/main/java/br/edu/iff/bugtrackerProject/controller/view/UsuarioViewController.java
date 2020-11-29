@@ -2,11 +2,14 @@ package br.edu.iff.bugtrackerProject.controller.view;
 
 import br.edu.iff.bugtrackerProject.model.Usuario;
 import br.edu.iff.bugtrackerProject.service.UsuarioService;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -63,8 +66,15 @@ public class UsuarioViewController {
     public String update(@Valid @ModelAttribute Usuario usuario, BindingResult result, @PathVariable("id") Long id, Model model) {
         //Valores de retorno padrão
         
-        if(result.hasErrors()) {
-            model.addAttribute("msgErros", result.getAllErrors());
+        List<FieldError> list = new ArrayList<>();
+        for(FieldError fe : result.getFieldErrors()){
+            if(!fe.getField().equals("senha")){
+                list.add(fe);
+            }
+        }
+        
+        if(!list.isEmpty()) {
+            model.addAttribute("msgErros", list);
             return "formUsuario";
         }
         
@@ -72,7 +82,7 @@ public class UsuarioViewController {
         try {
             service.update(usuario, "", "", ""); //usuario, senhaAtual, novaSenha, confirmarNovaSenha
             model.addAttribute("msgSucesso", "Usuário atualizado com sucesso");
-            model.addAttribute("usuario", new Usuario());
+            model.addAttribute("usuario", usuario);
             return "formUsuario";
         } catch(Exception e) {
             model.addAttribute("msgErros", new ObjectError("Usuario", e.getMessage()));

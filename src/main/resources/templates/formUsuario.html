@@ -44,7 +44,7 @@ and open the template in the editor.
                     </div>
                 </div>
                 
-                <div class="form-row">
+                <div class="form-row" th:if="${usuario.idUser==null}">
                     <div class="form-group col-md-6">
                         <label for="senha">Senha:</label>
                         <input th:field="*{senha}" type="password" class="form-control" placeholder="Senha" required="required" maxlength="50"/>

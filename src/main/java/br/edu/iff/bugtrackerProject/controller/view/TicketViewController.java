@@ -88,7 +88,7 @@ public class TicketViewController {
             ticket.setProjeto(projService.findById(projId));
             ticketService.update(ticket);
             model.addAttribute("msgSucesso", "Ticket atualizado com sucesso");
-            //model.addAttribute("ticket", new Ticket());
+            model.addAttribute("ticket", ticket);
             return "formTicket";
         } catch(Exception e) {
             model.addAttribute("msgErros", new ObjectError("Ticket", e.getMessage()));

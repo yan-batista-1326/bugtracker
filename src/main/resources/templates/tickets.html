@@ -28,9 +28,9 @@ and open the template in the editor.
                     <span class="card-text" th:text="${ticket.descricao}"></span><br/>
                     <span class="card-text" th:text="${ticket.tipo}"></span><br/>
                     <span class="card-text" th:text="${ticket.status}"></span><br/>
-                    <span class="card-text" th:text="${ticket.severidade}"></span><br/>
-                    <!--<span class="card-text" th:text="${ticket.dataCriacao}"></span>-->
-                    <span class="card-text" th:text="${ticket.solucao}"></span>
+                    <span class="card-text" th:text="${'Severidade: ' + ticket.severidade}"></span><br/>
+                    <span class="card-text" th:text="${'Data de Criação: ' + ticket.dataCriacao.get(5) + '/' + (ticket.dataCriacao.get(2)+1) + '/' + ticket.dataCriacao.get(1)}"></span><br/>
+                    <span class="card-text" th:text="${'Solução: ' + ticket.solucao}"></span>
                 </div>
                 
                 <div class="card-body">

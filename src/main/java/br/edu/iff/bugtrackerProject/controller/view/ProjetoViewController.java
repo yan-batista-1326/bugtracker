@@ -83,7 +83,7 @@ public class ProjetoViewController {
             projeto.setUsuario(userService.findById(userId));
             projService.update(projeto);
             model.addAttribute("msgSucesso", "Projeto atualizado com sucesso");
-            model.addAttribute("usuario", new Usuario());
+            model.addAttribute("projeto", projeto);
             return "formProjeto";
         } catch(Exception e) {
             model.addAttribute("msgErros", new ObjectError("Projeto", e.getMessage()));
