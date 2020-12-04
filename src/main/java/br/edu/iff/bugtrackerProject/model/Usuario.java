@@ -16,12 +16,15 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -60,6 +63,10 @@ public class Usuario implements Serializable{
     @OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.REMOVE)
     @Valid
     private List<Projeto> projetos = new ArrayList<>();
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Size(min = 1, message = "Funcionário deve ter no mínimo 1 permissão.")
+    private List<Permissao> permissoes = new ArrayList<>();
 
     //Construtor
     public Usuario() {}
@@ -91,6 +98,15 @@ public class Usuario implements Serializable{
     }
     
     //Getters and Setters
+
+    public List<Permissao> getPermissoes() {
+        return permissoes;
+    }
+
+    public void setPermissoes(List<Permissao> permissoes) {
+        this.permissoes = permissoes;
+    }
+    
     public List<Projeto> getProjetos() {
         return projetos;
     }

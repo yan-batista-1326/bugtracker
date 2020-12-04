@@ -1,10 +1,12 @@
 package br.edu.iff.bugtrackerProject;
 
+import br.edu.iff.bugtrackerProject.model.Permissao;
 import br.edu.iff.bugtrackerProject.model.Projeto;
 import br.edu.iff.bugtrackerProject.model.StatusTicketEnum;
 import br.edu.iff.bugtrackerProject.model.Ticket;
 import br.edu.iff.bugtrackerProject.model.TipoTicketEnum;
 import br.edu.iff.bugtrackerProject.model.Usuario;
+import br.edu.iff.bugtrackerProject.repository.PermissaoRepository;
 import br.edu.iff.bugtrackerProject.repository.ProjectRepository;
 import br.edu.iff.bugtrackerProject.repository.TicketRepository;
 import br.edu.iff.bugtrackerProject.repository.UserRepository;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class BugtrackerProjectApplication implements CommandLineRunner{
@@ -24,6 +27,8 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
     private TicketRepository ticketRepo;
     @Autowired
     private ProjectRepository projRepo;
+    @Autowired
+    private PermissaoRepository permissaoRepo;
     
     public static void main(String[] args) {
 	SpringApplication.run(BugtrackerProjectApplication.class, args);
@@ -31,6 +36,13 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
+        //Permissão
+        Permissao per1 = new Permissao();
+        per1.setNome("ADMIN");
+        Permissao per2 = new Permissao();
+        per2.setNome("FUNC");
+        permissaoRepo.saveAll(List.of(per1, per2));
+        
         //Ticket
         Ticket t1 = new Ticket();
         t1.setTitulo("Erro1");
@@ -74,10 +86,11 @@ public class BugtrackerProjectApplication implements CommandLineRunner{
         
         //Usuário
         Usuario user1 = new Usuario();
+        user1.setPermissoes(List.of(per1, per2));
         user1.setNome("José");
         user1.setSobrenome("Silva");
         user1.setEmail("joseSilva@hotmail.com");
-        user1.setSenha("Aa1234#6");
+        user1.setSenha(new BCryptPasswordEncoder().encode("Aa1234#6"));
         user1.setProjetos(List.of(p1, p2));
         
         userRepo.save(user1);

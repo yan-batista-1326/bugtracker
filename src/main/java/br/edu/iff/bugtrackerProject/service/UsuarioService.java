@@ -1,12 +1,13 @@
 package br.edu.iff.bugtrackerProject.service;
 
 import br.edu.iff.bugtrackerProject.exception.NotFoundException;
+import br.edu.iff.bugtrackerProject.model.Permissao;
 import br.edu.iff.bugtrackerProject.model.Usuario;
 import br.edu.iff.bugtrackerProject.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,7 +35,9 @@ public class UsuarioService {
         if(user.getIdUser() != null) {
             throw new RuntimeException("Id diferente de nulo");
         } else {
+            removePermissoesNulas(user);
             try {
+                user.setSenha(new BCryptPasswordEncoder().encode(user.getSenha()));
                 return repo.save(user);  
             } catch(Exception e) {
                 throw new RuntimeException("Falha ao salvar o usuário");
@@ -46,6 +49,8 @@ public class UsuarioService {
         //Só é permitido alterar nome de exibição (não usado em login) e senha
         //Verifica se usuário já existe
         Usuario obj = findById(user.getIdUser());
+        
+        removePermissoesNulas(user);
         
         //Verifica alteração de senha
         alterarSenha(obj, senhaAtual, novaSenha, confirmarNovaSenha);
@@ -68,14 +73,24 @@ public class UsuarioService {
     }
     
     private void alterarSenha(Usuario obj, String senhaAtual, String novaSenha, String confirmarNovaSenha) {
+        BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
         if(!senhaAtual.isBlank() && !novaSenha.isBlank() && !confirmarNovaSenha.isBlank()) {
-            if(!senhaAtual.equals(obj.getSenha())) {
+            if(crypt.matches(senhaAtual, obj.getSenha())) {
                 throw new RuntimeException("Senha atual está incorreta");
             }
             if(!novaSenha.equals(confirmarNovaSenha)) {
                 throw new RuntimeException("As senhas devem ser iguais");
             }
-            obj.setSenha(novaSenha);
+            obj.setSenha(new BCryptPasswordEncoder().encode(novaSenha));
+        }
+    }
+    
+    public void removePermissoesNulas(Usuario r){
+        r.getPermissoes().removeIf( (Permissao p) -> {
+            return p.getId()==null;
+        });
+        if(r.getPermissoes().isEmpty()){
+            throw new RuntimeException("Usuário deve conter no mínimo 1 permissão.");
         }
     }
 }

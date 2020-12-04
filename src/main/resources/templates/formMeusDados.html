@@ -5,24 +5,24 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{fragmentos :: imports-css(title='Usuários')}">
+    <head th:replace="~{fragmentos :: imports-css(title='Meus Dados')}">
         <title>...</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <div th:replace="~{fragmentos :: barramenu(pagina='usuarios')}"></div>
+        <div th:replace="~{fragmentos :: barramenu(pagina='meusdados')}"></div>
         
         <div class="container" style="width: 60%; margin-top: 20px">
             <div class="card-header">
-                <h4>Cadastro de Usuário
-                    <a class="btn btn-primary float-right" th:href="@{~/usuarios}" role="button">Voltar</a>
+                <h4>Meus Dados
+                    <a class="btn btn-primary float-right" th:href="@{~/}" role="button">Voltar</a>
                 </h4>
             </div>
             
             <div th:replace="~{fragmentos :: mensagens}"></div>
             
-            <form th:object="${usuario}" th:action="@{~/usuarios/usuario/{id}(id=${usuario.idUser})}" method="post" class="card-body">
+            <form th:object="${usuario}" th:action="@{~/usuarios/meusdados}" method="post" class="card-body">
                 <input type="hidden" th:field="*{idUser}"/>
                 
                 <div class="form-row">
@@ -37,43 +37,36 @@ and open the template in the editor.
                     </div>
                 </div>
                 
-                <div class="form-row" th:if="${usuario.idUser==null}">
+                <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="email">Email:</label>
-                        <input th:field="*{email}" type="text" class="form-control" placeholder="Email" required="required" maxlength="100"/>
+                        <input th:field="*{email}" type="text" class="form-control" placeholder="Email" required="required" maxlength="100" readonly="readonly"/>
                     </div>
                 </div>
-                
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label>Permissões:</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-check form-check-inline" th:each="permissao,i : ${permissoes}">
-                        <input class="form-check-input" type="checkbox" th:name="${'permissoes['+i.index+'].id'}"  th:value="${permissao.id}" th:checked="${#lists.contains(usuario.permissoes, permissao)? 'checked' : false}" />
-                        <label class="form-check-label" th:text="${permissao.nome}">t</label>
-                    </div>
-                </div>
-                
                  
-                <div class="form-row" th:if="${usuario.idUser==null}">
-                    <div class="form-group col-md-6">
-                        <label for="senha">Senha:</label>
-                        <input th:field="*{senha}" type="password" class="form-control" placeholder="Senha" required="required" maxlength="50"/>
-                    </div>  
-                    
-                    <!--<div class="form-group col-md-6">
-                        <label for="sobrenome">Confirmar senha:</label>
-                        <input th:field="*{sobrenome}" maxlength="50" type="password" class="form-control" placeholder="Confirmar senha" required="required"/>
-                    </div>-->
+                <div class="form-row">
+                    <small class="form-text" style="color: #ff6666"> * Deixe os campos vazios se não quiser trocar sua senha.</small>
                 </div>
-                
-                
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="senhaAtual">Senha atual:</label>
+                        <input th:name="senhaAtual" type="password" placeholder="Senha Atual" class="form-control" minlength="6"/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="novaSenha">Nova senha:</label>
+                        <input name="novaSenha" type="password" placeholder="Nova Senha" class="form-control"  minlength="6"/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="confirmarNovaSenha">Confirmar nova senha:</label>
+                        <input name="confirmarNovaSenha" type="password" placeholder="Confirmar Nova Senha" class="form-control"  minlength="6"/>
+                    </div>
+                </div>
                 
                 <div class="card-footer">
                     <input type="submit" class="btn btn-success" value="Salvar"/>
+                    <a class="btn btn-primary float-right" th:href="@{'~/usuarios/' + ${usuario.idUser} + '/projetos'}" role="button">Ver Projetos</a>
                 </div>
+                
             </form>
         </div>
         <div th:replace="~{fragmentos :: imports-js}"></div>
