@@ -75,7 +75,7 @@ public class UsuarioService {
     private void alterarSenha(Usuario obj, String senhaAtual, String novaSenha, String confirmarNovaSenha) {
         BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
         if(!senhaAtual.isBlank() && !novaSenha.isBlank() && !confirmarNovaSenha.isBlank()) {
-            if(crypt.matches(senhaAtual, obj.getSenha())) {
+            if(!crypt.matches(senhaAtual, obj.getSenha())) {
                 throw new RuntimeException("Senha atual está incorreta");
             }
             if(!novaSenha.equals(confirmarNovaSenha)) {

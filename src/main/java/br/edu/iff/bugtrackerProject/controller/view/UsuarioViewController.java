@@ -68,6 +68,7 @@ public class UsuarioViewController {
     @GetMapping(path="/usuario/{id}")
     public String alterar(@PathVariable("id") Long id, Model model) {
         model.addAttribute("usuario", service.findById(id));
+        model.addAttribute("permissoes", permissaoRepo.findAll());
         return "formUsuario";
     }
     

@@ -5,6 +5,8 @@ import br.edu.iff.bugtrackerProject.model.Usuario;
 import br.edu.iff.bugtrackerProject.service.ProjetoService;
 import br.edu.iff.bugtrackerProject.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,10 +26,16 @@ public class ProjetoViewController {
     private UsuarioService userService;
     
     @GetMapping
-    public String getAll(@PathVariable("userId") Long userId, Model model) {
+    public String getAll(@AuthenticationPrincipal User user, @PathVariable("userId") Long userId, Model model) {
         model.addAttribute("projetos", projService.findProjectsByUserId(userId));
         model.addAttribute("userId", userId);
-        return "projetos";
+        
+        Usuario uBD = userService.findByEmail(user.getUsername());
+        if(!uBD.getIdUser().equals(userId)){
+            throw new RuntimeException("Acesso negado.");
+        } else {
+            return("projetos");
+        }   
     }
     
     @GetMapping(path="/projeto")
